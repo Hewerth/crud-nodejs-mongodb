@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res) => {
-    let users = await User.find({status: true});
-
     try {
+        let users = await User.find({status: true});
         res.status(200).json({
             ok: true,
             usuarios: users
@@ -25,7 +25,8 @@ router.post('/', async (req, res) => {
     let newUser = new User({
         username: body.username,
         email: body.email,
-        password: body.password
+        //encriptar contraseña
+        password: bcrypt.hashSync(body.password, 10) 
     });
 
     try {
@@ -67,7 +68,8 @@ router.put('/:id', async (req,res)=>{
         let userUpdated = await User.updateOne({_id:req.params.id}, {$set: {
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password
+            //Encriptar contraseña
+            password: bcrypt.hashSync(req.body.password, 10)
         }});
         return res.status(200).json({
              ok:true,
