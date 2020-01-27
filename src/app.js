@@ -13,6 +13,8 @@ app.use(express.json());
 
 // Rutas
 app.use('/users', require('./routes/user'));
+app.use('/exercises', require('./routes/exercise'));
+
 // Server
 app.listen(app.get('port'), () =>{
     console.log('Server en el puerto:', app.get('port'));
